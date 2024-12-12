@@ -15,6 +15,11 @@ temperature_data = TemperatureData(cities=["Berlin", "Cairo", "Dubai", "Beijing"
 def get_current_temperature_sync(city):
     return weather_api.get_current_temperature(city)
 
+temperature_data = TemperatureData(cities=list(seasonal_temperatures.keys()))
+data = temperature_data.generate_realistic_temperature_data(num_years=10)
+
+season_stats = temperature_data.calculate_seasonal_statistics(data)
+
 # Основной интерфейс
 st.title("Анализ Температурных Данных")
 st.sidebar.header("Настройки")
