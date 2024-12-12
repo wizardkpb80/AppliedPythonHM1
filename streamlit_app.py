@@ -40,18 +40,25 @@ if data is not None:
     st.write("Описательная статистика по данным:")
     st.write(data.describe())
 
-    # Визуализация временного ряда температур
+    # Visualizing the temperature time series
     st.write("Временной ряд температур для выбранного города:")
+    
+    # Filter the data for the selected city
     city_data = data[data['city'] == city]
-    plt.figure(figsize=(10, 6))
-    plt.plot(city_data['timestamp'], city_data['temperature'], label='Температура')
-    plt.title(f"Временной ряд температур для города {city}")
-    plt.xlabel("Дата")
-    plt.ylabel("Температура (°C)")
-    plt.xticks(rotation=45)
-    plt.legend()
-    st.pyplot()
+    
+    # Create the figure and axis explicitly
+    fig, ax = plt.subplots(figsize=(10, 6))
+    
+    # Plot the temperature data
+    ax.plot(city_data['timestamp'], city_data['temperature'], label='Температура')
+    ax.set_title(f"Временной ряд температур для города {city}")
+    ax.set_xlabel("Дата")
+    ax.set_ylabel("Температура (°C)")
+    ax.tick_params(axis='x', rotation=45)
+    ax.legend()
 
+# Display the plot
+st.pyplot(fig)
     # Сезонные профили
     season_stats = temperature_data.calculate_seasonal_statistics(data)
     city_season_stats = season_stats[season_stats['city'] == city]
