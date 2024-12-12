@@ -18,9 +18,6 @@ def get_current_temperature_sync(city):
 st.title("Анализ Температурных Данных")
 st.sidebar.header("Настройки")
 
-# Загрузка исторических данных
-uploaded_file = st.sidebar.file_uploader("Загрузите файл с историческими данными", type="csv")
-
 # Выбор города
 city = st.sidebar.selectbox("Выберите город", seasonal_temperatures.keys())
 
@@ -30,17 +27,17 @@ api_key = st.sidebar.text_input("Введите ваш API-ключ OpenWeatherM
 # Инициализация данных
 temperature_data = TemperatureData(list(seasonal_temperatures.keys()))
 
-if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
-    st.write("Загруженные данные:", df.head())
+if data is not None:
+    data = pd.read_csv(uploaded_file)
+    st.write("Загруженные данные:", data.head())
 
     # Статистика по данным
     st.write("Описательная статистика по данным:")
-    st.write(df.describe())
+    st.write(data.describe())
 
     # Визуализация временного ряда температур
     st.write("Временной ряд температур для выбранного города:")
-    city_data = df[df['city'] == city]
+    city_data = data[data['city'] == city]
     plt.figure(figsize=(10, 6))
     plt.plot(city_data['timestamp'], city_data['temperature'], label='Температура')
     plt.title(f"Временной ряд температур для города {city}")
