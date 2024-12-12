@@ -11,10 +11,6 @@ API_KEY = st.secrets["API_KEY"]
 weather_api = WeatherAPI(API_KEY)
 temperature_data = TemperatureData(cities=["Berlin", "Cairo", "Dubai", "Beijing", "Moscow"])
 
-@time_decorator_sync  # Synchronous decorator applied
-def get_current_temperature_sync(city):
-    return weather_api.get_current_temperature(city)
-
 temperature_data = TemperatureData(cities=list(seasonal_temperatures.keys()))
 data = temperature_data.generate_realistic_temperature_data(num_years=10)
 
@@ -64,7 +60,7 @@ if api_key != '':
     st.write(city_season_stats)
 
     # Проверка текущей температуры
-    current_temp = get_current_temperature(city)
+    current_temp = weather_api.get_current_temperature(city)
     if current_temp is not None:
         current_season = month_to_season[datetime.now().month]
         is_normal = temperature_data.is_temperature_normal(city, current_temp, season_stats, current_season)
