@@ -5,6 +5,7 @@ from temperature_data import TemperatureData, seasonal_temperatures, month_to_se
 from utils import run_async
 import datetime
 
+API_KEY = st.secrets["API_KEY"]
 # Initialize WeatherAPI and TemperatureData
 weather_api = WeatherAPI(API_KEY)
 temperature_data = TemperatureData(cities=["Berlin", "Cairo", "Dubai", "Beijing", "Moscow"])
