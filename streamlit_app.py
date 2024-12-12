@@ -3,7 +3,7 @@ from utils import time_decorator_sync
 from weather import WeatherAPI
 from temperature_data import TemperatureData, seasonal_temperatures, month_to_season
 from utils import run_async
-import datetime
+from datetime import datetime
 import matplotlib.pyplot as plt
 
 API_KEY = st.secrets["API_KEY"]
