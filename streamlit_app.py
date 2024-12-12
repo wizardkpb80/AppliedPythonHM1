@@ -4,6 +4,7 @@ from weather import WeatherAPI
 from temperature_data import TemperatureData, seasonal_temperatures, month_to_season
 from utils import run_async
 import datetime
+import asyncio
 
 API_KEY = st.secrets["API_KEY"]
 # Initialize WeatherAPI and TemperatureData
