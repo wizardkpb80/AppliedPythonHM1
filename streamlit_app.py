@@ -19,6 +19,10 @@ def process_temperature_data(cities):
     results = run_async(weather_api.get_multiple_current_temperatures, cities)
     return results
 
+# Get current temperature for multiple cities synchronously
+cities = ["Berlin", "Cairo", "Dubai", "Beijing", "Moscow"]
+results = process_temperature_data(cities)
+
 # Основной интерфейс
 st.title("Анализ Температурных Данных")
 st.sidebar.header("Настройки")
