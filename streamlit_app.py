@@ -4,6 +4,7 @@ from weather import WeatherAPI
 from temperature_data import TemperatureData, seasonal_temperatures, month_to_season
 from utils import run_async
 import datetime
+import matplotlib.pyplot as plt
 
 API_KEY = st.secrets["API_KEY"]
 # Initialize WeatherAPI and TemperatureData
@@ -28,7 +29,6 @@ api_key = st.sidebar.text_input("Введите ваш API-ключ OpenWeatherM
 temperature_data = TemperatureData(list(seasonal_temperatures.keys()))
 
 if data is not None:
-    data = pd.read_csv(uploaded_file)
     st.write("Загруженные данные:", data.head())
 
     # Статистика по данным
@@ -48,7 +48,7 @@ if data is not None:
     st.pyplot()
 
     # Сезонные профили
-    season_stats = temperature_data.calculate_seasonal_statistics(df)
+    season_stats = temperature_data.calculate_seasonal_statistics(data)
     city_season_stats = season_stats[season_stats['city'] == city]
     st.write(f"Сезонные профили для города {city}:")
     st.write(city_season_stats)
@@ -65,3 +65,4 @@ if data is not None:
                 st.error(f"Текущая температура в {city}: {current_temp}°C. Это аномальная температура для текущего сезона.")
 else:
     st.warning("Введите API-ключ для получения текущей температуры.")
+
