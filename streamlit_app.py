@@ -56,9 +56,7 @@ if data is not None:
     ax.set_ylabel("Температура (°C)")
     ax.tick_params(axis='x', rotation=45)
     ax.legend()
-
-# Display the plot
-st.pyplot(fig)
+    st.pyplot(fig)
     # Сезонные профили
     season_stats = temperature_data.calculate_seasonal_statistics(data)
     city_season_stats = season_stats[season_stats['city'] == city]
