@@ -4,7 +4,6 @@ from weather import WeatherAPI
 from temperature_data import TemperatureData, seasonal_temperatures, month_to_season
 from utils import run_async
 import datetime
-import asyncio
 
 API_KEY = st.secrets["API_KEY"]
 # Initialize WeatherAPI and TemperatureData
@@ -14,19 +13,6 @@ temperature_data = TemperatureData(cities=["Berlin", "Cairo", "Dubai", "Beijing"
 @time_decorator_sync  # Synchronous decorator applied
 def get_current_temperature_sync(city):
     return weather_api.get_current_temperature(city)
-
-@time_decorator_sync  # Synchronous decorator applied
-async def get_multiple_current_temperatures_async(cities):
-    tasks = [weather_api.get_current_temperature(city) for city in cities]
-    return await asyncio.gather(*tasks)
-
-def process_temperature_data(cities):
-    # Wrap async function with asyncio.run()
-    return asyncio.run(get_multiple_current_temperatures_async(cities))
-
-# Get current temperature for multiple cities synchronously
-cities = ["Berlin", "Cairo", "Dubai", "Beijing", "Moscow"]
-results = process_temperature_data(cities)
 
 # Основной интерфейс
 st.title("Анализ Температурных Данных")
