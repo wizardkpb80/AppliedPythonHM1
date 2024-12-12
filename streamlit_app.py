@@ -33,7 +33,7 @@ api_key = st.sidebar.text_input("Введите ваш API-ключ OpenWeatherM
 # Инициализация данных
 temperature_data = TemperatureData(list(seasonal_temperatures.keys()))
 
-if data is not None:
+if api_key is not None:
     st.write("Загруженные данные:", data.head())
 
     # Статистика по данным
@@ -64,15 +64,14 @@ if data is not None:
     st.write(city_season_stats)
 
     # Проверка текущей температуры
-    if api_key:
-        current_temp = get_current_temperature(city, api_key)
-        if current_temp is not None:
-            current_season = month_to_season[datetime.now().month]
-            is_normal = temperature_data.is_temperature_normal(city, current_temp, season_stats, current_season)
-            if is_normal:
-                st.success(f"Текущая температура в {city}: {current_temp}°C. Она в пределах нормы для текущего сезона.")
-            else:
-                st.error(f"Текущая температура в {city}: {current_temp}°C. Это аномальная температура для текущего сезона.")
+    current_temp = get_current_temperature(city)
+    if current_temp is not None:
+        current_season = month_to_season[datetime.now().month]
+        is_normal = temperature_data.is_temperature_normal(city, current_temp, season_stats, current_season)
+        if is_normal:
+            st.success(f"Текущая температура в {city}: {current_temp}°C. Она в пределах нормы для текущего сезона.")
+        else:
+            st.error(f"Текущая температура в {city}: {current_temp}°C. Это аномальная температура для текущего сезона.")
 else:
     st.warning("Введите API-ключ для получения текущей температуры.")
 
