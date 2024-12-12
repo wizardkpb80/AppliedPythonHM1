@@ -16,8 +16,10 @@ def get_current_temperature_sync(city):
 
 @time_decorator_sync  # Synchronous decorator applied
 def process_temperature_data(cities):
-    results = run_async(weather_api.get_multiple_current_temperatures, cities)
-    return results
+#    results = run_async(weather_api.get_multiple_current_temperatures, cities)
+#    return results
+    tasks = [weather_api.get_current_temperature(city) for city in cities]
+    return await asyncio.gather(*tasks)
 
 # Get current temperature for multiple cities synchronously
 cities = ["Berlin", "Cairo", "Dubai", "Beijing", "Moscow"]
