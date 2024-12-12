@@ -64,7 +64,7 @@ if api_key != '':
     st.write(city_season_stats)
 
     # Проверка текущей температуры
-    current_temp = get_current_temperature(city)
+    current_temp = temperature_data.get_current_temperature(city)
     if current_temp is not None:
         current_season = month_to_season[datetime.now().month]
         is_normal = temperature_data.is_temperature_normal(city, current_temp, season_stats, current_season)
