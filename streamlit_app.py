@@ -33,7 +33,7 @@ api_key = st.sidebar.text_input("Введите ваш API-ключ OpenWeatherM
 # Инициализация данных
 temperature_data = TemperatureData(list(seasonal_temperatures.keys()))
 
-if api_key <> '':
+if api_key != '':
     st.write("Загруженные данные:", data.head())
 
     # Статистика по данным
