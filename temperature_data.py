@@ -61,3 +61,29 @@ class TemperatureData:
         lower_bound = mean - 2 * std
         upper_bound = mean + 2 * std
         return lower_bound <= current_temp <= upper_bound
+
+    def load_data(self, file):
+        """
+        Загрузить данные из файла, проверив наличие необходимых колонок.
+        """
+        try:
+            data = pd.read_csv(file)
+            # Проверка наличия необходимых столбцов
+            required_columns = {'city', 'timestamp', 'temperature'}
+            if not required_columns.issubset(data.columns):
+                raise ValueError(f"Файл должен содержать столбцы: {', '.join(required_columns)}")
+
+            # Преобразование timestamp в формат datetime
+            data['timestamp'] = pd.to_datetime(data['timestamp'], errors='coerce')
+            if data['timestamp'].isna().any():
+                raise ValueError("Некорректные значения в колонке 'timestamp'. Убедитесь, что даты записаны правильно.")
+
+            # Добавление колонки с сезонами
+            data['season'] = data['timestamp'].dt.month.map(lambda x: month_to_season[x])
+
+            return data
+
+        except Exception as e:
+            raise ValueError(f"Ошибка при загрузке файла: {e}")
+
+
