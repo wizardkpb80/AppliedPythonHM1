@@ -34,3 +34,11 @@ def time_decorator_sync(func):
         return result
 
     return wrapper
+
+# Стилизованное отображение таблицы
+def style_table(data):
+    styled = data.style.apply(
+        lambda x: ["background-color: #f9f9f9" if i % 2 == 0 else "background-color: #e0e0e0" for i in range(len(x))],
+        axis=0
+    )
+    return styled
