@@ -13,7 +13,7 @@ temperature_data = TemperatureData(list(seasonal_temperatures.keys()))
 data = temperature_data.generate_realistic_temperature_data(num_years=10)
 
 # Основной интерфейс
-st.title("Анализ Температурных Данных")
+st.title("Анализ температурных данных")
 st.sidebar.header("По умолчанию данные сгенерированы автоматически")
 
 # Форма для ввода API-ключа
@@ -78,7 +78,7 @@ if api_key:
         weather_api = WeatherAPI(api_key)
         current_temp = weather_api.get_current_temperature(city)
         if isinstance(current_temp, dict) and "error" in current_temp:
-            st.error("Ошибка: Некорректный API-ключ. Проверьте и попробуйте снова.")
+            st.error("Ошибка: Некорректный API-ключ.")
         elif current_temp is not None:
             current_season = month_to_season[datetime.now().month]
             is_normal = temperature_data.is_temperature_normal(city, current_temp, season_stats, current_season)
@@ -91,4 +91,4 @@ if api_key:
     except Exception as e:
         st.error(f"Ошибка weather_api: {e}")
 else:
-    st.info("Введите API-ключ OpenWeatherMap для получения данных о текущей температуре.")
+    st.info("Введите API-ключ для получения данных о текущей температуре.")
