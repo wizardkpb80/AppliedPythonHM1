@@ -6,10 +6,8 @@ from utils import style_table
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-API_KEY = st.secrets["API_KEY"]
-
 # Initialize WeatherAPI and TemperatureData
-weather_api = WeatherAPI(API_KEY)
+
 temperature_data = TemperatureData(list(seasonal_temperatures.keys()))
 data = temperature_data.generate_realistic_temperature_data(num_years=10)
 
@@ -76,6 +74,7 @@ st.dataframe(style_table(city_data[['timestamp', 'temperature', 'season', 'is_an
 
 if api_key:
     try:
+        weather_api = WeatherAPI(api_key)
         current_temp = weather_api.get_current_temperature(city)
         if isinstance(current_temp, dict) and "error" in current_temp:
             st.error("Ошибка: Некорректный API-ключ. Проверьте и попробуйте снова.")
