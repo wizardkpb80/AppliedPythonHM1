@@ -6,7 +6,7 @@ from utils import run_async
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-#API_KEY = st.secrets["API_KEY"]
+API_KEY = st.secrets["API_KEY"]
 
 # Initialize WeatherAPI and TemperatureData
 weather_api = WeatherAPI(API_KEY)
