@@ -15,7 +15,7 @@ data = temperature_data.generate_realistic_temperature_data(num_years=10)
 
 # Основной интерфейс
 st.title("Анализ Температурных Данных")
-st.sidebar.header("Настройки")
+st.sidebar.header("По умолчанию данные сгенерированы автоматически")
 
 st.sidebar.info("Загрузите CSV-файл с колонками: city, timestamp, temperature")
 uploaded_file = st.sidebar.file_uploader("Загрузите файл с историческими данными", type=["csv"])
@@ -31,23 +31,11 @@ st.dataframe(style_table(data.head()), use_container_width=True)
 st.write("Описательная статистика по данным:")
 st.write(style_table(data.describe()), use_container_width=True)
 
-# Visualizing the temperature time series
-st.write("Временной ряд температур для выбранного города:")
-
 # Filter the data for the selected city
 city_data = data[data['city'] == city]
 
 # Create the figure and axis explicitly
 fig, ax = plt.subplots(figsize=(10, 6))
-
-# Plot the temperature data
-ax.plot(city_data['timestamp'], city_data['temperature'], label='Температура')
-ax.set_title(f"Временной ряд температур для города {city}")
-ax.set_xlabel("Дата")
-ax.set_ylabel("Температура (°C)")
-ax.tick_params(axis='x', rotation=45)
-ax.legend()
-st.pyplot(fig)
 
 season_stats = city_data.groupby(['city', 'season'])['temperature'].agg(['mean', 'std']).reset_index()
 season_stats = season_stats.rename(columns={'mean': 'season_mean', 'std': 'season_std'})
@@ -69,6 +57,20 @@ temperature_season_stats = temperature_data.calculate_seasonal_statistics(data)
 temperature_season_stats = season_stats[season_stats['city'] == city]
 st.write(f"Сезонные профили для города {city}:")
 st.write(temperature_season_stats)
+
+# Сезонные профили
+st.subheader(f"Сезонные профили для {city}")
+seasonal_stats = city_data[city_data['city'] == city]
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.bar(seasonal_stats['season'], seasonal_stats['season_mean'], yerr=seasonal_stats['season_std'], capsize=5)
+ax.set_title(f"Средние температуры и отклонения в {city}")
+ax.set_xlabel("Сезон")
+ax.set_ylabel("Температура (°C)")
+st.pyplot(fig)
+
+# Вывод данных
+st.subheader("Данные")
+st.dataframe(city_data[['timestamp', 'temperature', 'season', 'is_anomaly']], use_container_width=True)
 
 try:
     current_temp = weather_api.get_current_temperature(city)
