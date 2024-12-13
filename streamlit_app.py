@@ -2,7 +2,7 @@ import streamlit as st
 from utils import time_decorator_sync
 from weather import WeatherAPI
 from temperature_data import TemperatureData, seasonal_temperatures, month_to_season
-from utils import run_async
+from utils import style_table
 from datetime import datetime
 import matplotlib.pyplot as plt
 
@@ -24,11 +24,12 @@ if uploaded_file is not None:
 # Выбор города
 city = st.sidebar.selectbox("Выберите город", seasonal_temperatures.keys())
 
-st.write("Загруженные данные:", data.head())
+st.write("### Загруженные данные:")
+st.dataframe(style_table(data.head()), use_container_width=True)
 
 # Статистика по данным
 st.write("Описательная статистика по данным:")
-st.write(data.describe())
+st.write(style_table(data.describe()), use_container_width=True)
 
 # Visualizing the temperature time series
 st.write("Временной ряд температур для выбранного города:")
