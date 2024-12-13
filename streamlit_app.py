@@ -83,9 +83,9 @@ if api_key:
             current_season = month_to_season[datetime.now().month]
             is_normal = temperature_data.is_temperature_normal(city, current_temp, season_stats, current_season)
             if is_normal:
-                st.success(f"Текущая температура в {city}: {current_temp}°C. Она в пределах нормы для текущего сезона.")
+                st.success(f"Текущая температура в {city}: {current_temp}°C. в пределах нормы для текущего сезона.")
             else:
-                st.error(f"Текущая температура в {city}: {current_temp}°C. Это аномальная температура для текущего сезона.")
+                st.error(f"Текущая температура в {city}: {current_temp}°C. - аномальная температура для текущего сезона.")
         else:
             st.error("Не удалось получить текущую температуру. Проверьте введённый API-ключ.")
     except Exception as e:
