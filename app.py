@@ -4,7 +4,7 @@ from temperature_data import TemperatureData, seasonal_temperatures, month_to_se
 from utils import run_async
 import datetime
 
-API_KEY = "c2f6bec934bedd4b070444ac59ccca2a"  # Replace with your API Key
+API_KEY = "" # Replace with your API Key
 
 # Initialize WeatherAPI and TemperatureData
 weather_api = WeatherAPI(API_KEY)
