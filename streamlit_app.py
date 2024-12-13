@@ -17,6 +17,9 @@ data = temperature_data.generate_realistic_temperature_data(num_years=10)
 st.title("Анализ Температурных Данных")
 st.sidebar.header("По умолчанию данные сгенерированы автоматически")
 
+# Форма для ввода API-ключа
+api_key = st.sidebar.text_input("Введите ваш API-ключ OpenWeatherMap:", type="password")
+
 st.sidebar.info("Загрузите CSV-файл с колонками: city, timestamp, temperature")
 uploaded_file = st.sidebar.file_uploader("Загрузите файл с историческими данными", type=["csv"])
 if uploaded_file is not None:
@@ -59,7 +62,6 @@ st.write(f"Сезонные профили для города {city}:")
 st.write(temperature_season_stats)
 
 # Сезонные профили
-st.subheader(f"Сезонные профили для {city}")
 seasonal_stats = city_data[city_data['city'] == city]
 fig, ax = plt.subplots(figsize=(8, 5))
 ax.bar(seasonal_stats['season'], seasonal_stats['season_mean'], yerr=seasonal_stats['season_std'], capsize=5)
@@ -70,16 +72,23 @@ st.pyplot(fig)
 
 # Вывод данных
 st.subheader("Данные")
-st.dataframe(city_data[['timestamp', 'temperature', 'season', 'is_anomaly']], use_container_width=True)
+st.dataframe(style_table(city_data[['timestamp', 'temperature', 'season', 'is_anomaly']]), use_container_width=True)
 
-try:
-    current_temp = weather_api.get_current_temperature(city)
-    if current_temp is not None:
-        current_season = month_to_season[datetime.now().month]
-        is_normal = temperature_data.is_temperature_normal(city, current_temp, season_stats, current_season)
-        if is_normal:
-            st.success(f"Текущая температура в {city}: {current_temp}°C. Она в пределах нормы для текущего сезона.")
+if api_key:
+    try:
+        current_temp = weather_api.get_current_temperature(city)
+        if isinstance(current_temp, dict) and "error" in current_temp:
+            st.error("Ошибка: Некорректный API-ключ. Проверьте и попробуйте снова.")
+        elif current_temp is not None:
+            current_season = month_to_season[datetime.now().month]
+            is_normal = temperature_data.is_temperature_normal(city, current_temp, season_stats, current_season)
+            if is_normal:
+                st.success(f"Текущая температура в {city}: {current_temp}°C. Она в пределах нормы для текущего сезона.")
+            else:
+                st.error(f"Текущая температура в {city}: {current_temp}°C. Это аномальная температура для текущего сезона.")
         else:
-            st.error(f"Текущая температура в {city}: {current_temp}°C. Это аномальная температура для текущего сезона.")
-except Exception as e:
-    st.error(f"Ошибка weather_api: {e}")
+            st.error("Не удалось получить текущую температуру. Проверьте введённый API-ключ.")
+    except Exception as e:
+        st.error(f"Ошибка weather_api: {e}")
+else:
+    st.info("Введите API-ключ OpenWeatherMap для получения данных о текущей температуре.")
