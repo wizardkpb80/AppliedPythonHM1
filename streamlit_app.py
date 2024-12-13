@@ -7,6 +7,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 
 # Initialize WeatherAPI and TemperatureData
+#API_KEY = st.secrets["API_KEY"]
 
 temperature_data = TemperatureData(list(seasonal_temperatures.keys()))
 data = temperature_data.generate_realistic_temperature_data(num_years=10)
